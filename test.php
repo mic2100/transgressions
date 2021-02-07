@@ -1,23 +1,26 @@
 <?php
 
-use Transgressions\Metadata\Query;
-use Transgressions\TestNestedException;
-
 require_once __DIR__ . '/vendor/autoload.php';
+
+use Transgressions\Agitator;
+use Transgressions\Metadata\Exception as MetadataException;
+use Transgressions\Metadata\Query as QueryMetadata;
+use TransgressionsTest\Utility\NestedException;
+use Throwable;
 
 function testException()
 {
     try {
         echo 'Testing Whoops Inspector' . PHP_EOL;
 
-        (new TestNestedException)->test();
-    } catch (\Throwable $exception) {
-        $mdException = new \Transgressions\Metadata\Exception($exception);
-        $processDigest = \Transgressions\Agitator::getInstance();
+        (new NestedException)->test();
+    } catch (Throwable $exception) {
+        $mdException = new MetadataException($exception);
+        $processDigest = Agitator::getInstance();
         $processDigest->setException($mdException);
-        $processDigest->addMetadata(new Query(
-            'test query',
-            ['value-1', 'value_2'],
+        $processDigest->addMetadata(new QueryMetadata(
+            'SELECT * FROM table WHERE id > ? AND id < ?',
+            [10, 100],
             12.43
         ));
 
@@ -26,5 +29,3 @@ function testException()
 }
 
 testException();
-
-

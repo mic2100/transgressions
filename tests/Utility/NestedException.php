@@ -1,8 +1,8 @@
 <?php
 
-namespace Transgressions;
+namespace TransgressionsTest\Utility;
 
-class TestNestedException
+class NestedException
 {
     /**
      * @throws \Exception
